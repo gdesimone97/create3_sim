@@ -6,9 +6,9 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, RegisterEventHandler
-from launch.conditions import IfCondition
+from launch.conditions import LaunchConfigurationNotEquals
 from launch.event_handlers import OnProcessExit
-from launch.substitutions import LaunchConfiguration, NotEqualsSubstitution, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
 
 ARGUMENTS = [
@@ -30,16 +30,12 @@ def generate_launch_description():
         executable='spawner',
         namespace=namespace,  # Namespace is not pushed when used in EventHandler
         parameters=[control_params_file],
-        arguments=[
+        arguments=arguments=[
             'diffdrive_controller',
             '-c',
             'controller_manager',
             '--controller-manager-timeout',
-            '60',
-            '--service-call-timeout',
-            '60',
-            '--switch-timeout',
-            '60',
+            '30'
         ],
         output='screen',
     )
@@ -52,11 +48,7 @@ def generate_launch_description():
             '-c',
             'controller_manager',
             '--controller-manager-timeout',
-            '60',
-            '--service-call-timeout',
-            '60',
-            '--switch-timeout',
-            '60',
+            '30'
         ],
         output='screen',
     )
@@ -83,7 +75,7 @@ def generate_launch_description():
             ('/tf_static', 'tf_static')
         ],
         output='screen',
-        condition=IfCondition(NotEqualsSubstitution(LaunchConfiguration('namespace'), ''))
+        condition=LaunchConfigurationNotEquals('namespace', '')
     )
 
     # Static transform from <namespace>/base_link to base_link
@@ -99,7 +91,7 @@ def generate_launch_description():
             ('/tf_static', 'tf_static')
         ],
         output='screen',
-        condition=IfCondition(NotEqualsSubstitution(LaunchConfiguration('namespace'), ''))
+        condition=LaunchConfigurationNotEquals('namespace', '')
     )
 
     ld = LaunchDescription(ARGUMENTS)
