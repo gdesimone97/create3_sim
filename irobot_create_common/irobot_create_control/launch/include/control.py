@@ -30,12 +30,16 @@ def generate_launch_description():
         executable='spawner',
         namespace=namespace,  # Namespace is not pushed when used in EventHandler
         parameters=[control_params_file],
-        arguments=arguments=[
-            'diffdrive_controller',
+        arguments=[
+            'joint_state_broadcaster',
             '-c',
             'controller_manager',
             '--controller-manager-timeout',
-            '30'
+            '60',
+            '--service-call-timeout',
+            '60',
+            '--switch-timeout',
+            '60',
         ],
         output='screen',
     )
@@ -48,7 +52,11 @@ def generate_launch_description():
             '-c',
             'controller_manager',
             '--controller-manager-timeout',
-            '30'
+            '60',
+            '--service-call-timeout',
+            '60',
+            '--switch-timeout',
+            '60',
         ],
         output='screen',
     )
