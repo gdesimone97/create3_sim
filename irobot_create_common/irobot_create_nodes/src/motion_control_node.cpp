@@ -332,16 +332,6 @@ void MotionControlNode::hazard_vector_callback(
 
 void MotionControlNode::commanded_velocity_callback(geometry_msgs::msg::Twist::ConstSharedPtr msg)
 {
-  if (scheduler_->has_behavior()) {
-    const auto time_now = this->now();
-    if (time_now - auto_override_print_ts_ > repeat_print_) {
-      auto_override_print_ts_ = time_now;
-      RCLCPP_WARN(
-        this->get_logger(),
-        "Ignoring velocities commanded while an autonomous behavior is running!");
-    }
-    return;
-  }
 
   const std::lock_guard<std::mutex> lock(mutex_);
 
