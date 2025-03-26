@@ -31,7 +31,7 @@ def generate_launch_description():
         namespace=namespace,  # Namespace is not pushed when used in EventHandler
         parameters=[control_params_file],
         arguments=[
-            'joint_state_broadcaster',
+            'diffdrive_controller',
             '-c',
             'controller_manager',
             '--controller-manager-timeout',
